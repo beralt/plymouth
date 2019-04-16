@@ -349,10 +349,14 @@ create_devices_for_subsystem (ply_device_manager_t *manager,
                 if (udev_device_get_is_initialized (device)) {
                         ply_trace ("device is initialized");
 
+#ifdef ENABLE_IGNORE_SEATS
+                        if (true) {
+#else
                         /* We only care about devices assigned to a (any) devices. Floating
                          * devices should be ignored.
                          */
                         if (udev_device_has_tag (device, "seat")) {
+#endif
                                 const char *node;
                                 node = udev_device_get_devnode (device);
                                 if (node != NULL) {
@@ -470,7 +474,9 @@ watch_for_udev_events (ply_device_manager_t *manager)
 
                 udev_monitor_filter_add_match_subsystem_devtype (manager->udev_monitor, SUBSYSTEM_DRM, NULL);
                 udev_monitor_filter_add_match_subsystem_devtype (manager->udev_monitor, SUBSYSTEM_FRAME_BUFFER, NULL);
+#ifndef ENABLE_IGNORE_SEATS
                 udev_monitor_filter_add_match_tag (manager->udev_monitor, "seat");
+#endif
                 udev_monitor_enable_receiving (manager->udev_monitor);
         }
 

@@ -196,6 +196,9 @@ AC_DEFINE_UNQUOTED(BOOT_TTY, "$BOOT_TTY", [TTY to use in boot mode])
 AC_ARG_WITH(shutdown-tty, AS_HELP_STRING([--with-shutdown-tty=<tty>],[Default TTY to use in shutdown mode (by default tty63)]),SHUTDOWN_TTY=${withval},SHUTDOWN_TTY=/dev/tty63)
 AC_DEFINE_UNQUOTED(SHUTDOWN_TTY, "$SHUTDOWN_TTY", [TTY to use in shutdown mode])
 
+AC_ARG_ENABLE(ignore-seats, AS_HELP_STRING([--enable-ignore-seats], [ignore the udev seats tag when enumerating devices]),enable_ignore_seats=$enableval,enable_ignore_seats=yes)
+AM_CONDITIONAL(ENABLE_IGNORE_SEATS,  [test "$enable_ignore_seats" = yes])
+
 # Turn on the additional warnings last, so -Werror doesn't affect other tests.
 
 AC_DEFUN([PLYMOUTH_CC_TRY_FLAG], [
